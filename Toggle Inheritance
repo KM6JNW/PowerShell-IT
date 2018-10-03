@@ -1,0 +1,14 @@
+#Define script target. Add -Recurse to the end if you want it to go below the target level. 
+$FolderPath = dir -Directory -Path "C:\" -Recurse -Force
+#Iterate through each folder in the target folder.
+Foreach ($Folder in $FolderPath)
+{
+    #Define your Acl as the Already in place Acl. 
+    $SourceACL = Get-ACL -Path $Folder.FullName
+    #Disable Inheritance but copies current permissions explicitly
+    #$SourceACL.SetAccessRuleProtection($True, $True)
+    #Enables Inheritance
+    $SourceACL.SetAccessRuleProtection($False, $True)
+    #Executes the Acl change. 
+    (Get-Item $Folder.FullName).SetAccessControl($SourceACL)
+}
