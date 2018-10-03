@@ -1,12 +1,12 @@
 #Define script target. Add -Recurse to the end if you want it to go below the target level. 
-$FolderPath = dir -Directory -Path "\\nawesdnifs101v\NETC01`$\SDNI_CNATTUNI\Test\Permissions" -Recurse -Force
+$FolderPath = dir -Directory -Path "c:\Test" -Recurse -Force
 #Iterate through each folder in the target folder.
 Foreach ($Folder in $FolderPath)
 {
     #Define the $SourceACL as the current $Folder Acl in $FolderPath. 
     $SourceACL = (Get-Item $Folder.FullName).GetAccessControl('Access')
     #Set the target path as any folders in the $Path with IDENTICAL names as those in the $FolderPath. -Directory limits it to folders. -Recurse goes unlimited depth. -Force finds hidden. -Include $Folder is the identical match command.
-    $Path = Get-ChildItem -Directory -Path "\\nawesdnifs101v\NETC01`$\SDNI_CNATTUNI\Test\Departments" -Recurse -Force -Include $Folder
+    $Path = Get-ChildItem -Directory -Path "C:\Production" -Recurse -Force -Include $Folder
     #Executes the Acl change. 
     (Get-Item $Path.FullName).SetAccessControl($SourceACL)
 }
